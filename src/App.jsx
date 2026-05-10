@@ -7,6 +7,7 @@ import LeftSidebar from './components/layout/LeftSidebar.jsx';
 import ChatPanel from './components/layout/ChatPanel.jsx';
 import RightSidebar from './components/layout/RightSidebar.jsx';
 import CompareModal from './components/diagrams/CompareModal.jsx';
+import AgentProfileModal from './components/AgentProfileModal.jsx';
 
 const INITIAL_CONVOS = Object.fromEntries(Object.keys(AGENTS).map(id => [id, []]));
 
@@ -29,6 +30,7 @@ export default function App() {
   const [selectedArtifact, setSelectedArtifact] = useState(null);
   const [compareSelection, setCompareSel] = useState([]);
   const [showCompare, setShowCompare] = useState(false);
+  const [profileAgentId, setProfileAgentId] = useState(null);
 
   // Load Mermaid from CDN once
   useEffect(() => {
@@ -175,6 +177,7 @@ export default function App() {
         artifacts={artifacts}
         diagrams={diagrams}
         onSelectAgent={setActiveAgent}
+        onShowProfile={setProfileAgentId}
       />
 
       <ChatPanel
@@ -214,6 +217,13 @@ export default function App() {
           diagrams={diagrams}
           selection={compareSelection}
           onClose={() => setShowCompare(false)}
+        />
+      )}
+
+      {profileAgentId && (
+        <AgentProfileModal
+          agent={AGENTS[profileAgentId]}
+          onClose={() => setProfileAgentId(null)}
         />
       )}
     </div>

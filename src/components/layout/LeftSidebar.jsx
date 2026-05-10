@@ -7,7 +7,7 @@ const PERSONAS = [
   ['End Client', 'HNW individual',           '#BA7517'],
 ];
 
-export default function LeftSidebar({ activeAgent, convos, artifacts, diagrams, onSelectAgent }) {
+export default function LeftSidebar({ activeAgent, convos, artifacts, diagrams, onSelectAgent, onShowProfile }) {
   return (
     <div style={{ width: 216, background: '#1A1A18', display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
       {/* Brand bar */}
@@ -28,39 +28,50 @@ export default function LeftSidebar({ activeAgent, convos, artifacts, diagrams, 
           const active = activeAgent === ag.id;
           const n = Math.floor((convos[ag.id]?.length || 0) / 2);
           return (
-            <button
-              key={ag.id}
-              onClick={() => onSelectAgent(ag.id)}
-              aria-pressed={active}
-              style={{
-                width: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 7,
-                padding: '6px 8px',
-                borderRadius: 6,
-                border: 'none',
-                marginBottom: 1,
-                background: active ? `${ag.color}18` : 'transparent',
-                color: active ? ag.color : 'rgba(255,255,255,0.42)',
-                textAlign: 'left',
-              }}
-            >
-              <i className={`ti ${ag.icon}`} style={{ fontSize: 14, flexShrink: 0 }} aria-hidden="true" />
-              <span style={{ fontSize: 11, flex: 1 }}>{ag.name}</span>
-              {n > 0 && (
-                <span style={{
-                  fontSize: 9,
-                  fontWeight: 600,
-                  background: active ? ag.color : 'rgba(255,255,255,0.1)',
-                  color: active ? 'white' : 'rgba(255,255,255,0.35)',
-                  borderRadius: 8,
-                  padding: '1px 5px',
-                }}>
-                  {n}
-                </span>
-              )}
-            </button>
+            <div key={ag.id} style={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 1 }}>
+              <button
+                onClick={() => onSelectAgent(ag.id)}
+                aria-pressed={active}
+                style={{
+                  flex: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 7,
+                  padding: '6px 8px',
+                  borderRadius: 6,
+                  border: 'none',
+                  background: active ? `${ag.color}18` : 'transparent',
+                  color: active ? ag.color : 'rgba(255,255,255,0.42)',
+                  textAlign: 'left',
+                  minWidth: 0,
+                }}
+              >
+                <i className={`ti ${ag.icon}`} style={{ fontSize: 14, flexShrink: 0 }} aria-hidden="true" />
+                <span style={{ fontSize: 11, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ag.name}</span>
+                {n > 0 && (
+                  <span style={{
+                    fontSize: 9,
+                    fontWeight: 600,
+                    background: active ? ag.color : 'rgba(255,255,255,0.1)',
+                    color: active ? 'white' : 'rgba(255,255,255,0.35)',
+                    borderRadius: 8,
+                    padding: '1px 5px',
+                    flexShrink: 0,
+                  }}>
+                    {n}
+                  </span>
+                )}
+              </button>
+              <button
+                onClick={() => onShowProfile(ag.id)}
+                aria-label={`View ${ag.name} profile`}
+                style={{ background: 'none', border: 'none', padding: '4px 5px', color: 'rgba(255,255,255,0.18)', borderRadius: 4, display: 'flex', alignItems: 'center', flexShrink: 0 }}
+                onMouseEnter={e => e.currentTarget.style.color = 'rgba(255,255,255,0.5)'}
+                onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.18)'}
+              >
+                <i className="ti ti-info-circle" style={{ fontSize: 12 }} aria-hidden="true" />
+              </button>
+            </div>
           );
         })}
       </div>
